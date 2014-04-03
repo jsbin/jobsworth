@@ -1,0 +1,23 @@
+{
+  "name": "jobsworth",
+  "version": "0.0.0",
+  "description": "jobsworth =========",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jsbin/jobsworth.git"
+  },
+  "author": "Fabien O'Carroll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsbin/jobsworth/issues"
+  },
+  "homepage": "https://github.com/jsbin/jobsworth",
+  "dependencies": {
+    "jsbin-dropbox-sync": "0.0.0",
+    "zmq": "~2.6.0"
+  }
+}
