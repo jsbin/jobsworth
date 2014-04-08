@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/jsbin/jobsworth",
   "dependencies": {
-    "jsbin-dropbox-sync": "0.0.0",
-    "zmq": "~2.6.0"
+    "zmq": "~2.6.0",
+    "rsvp": "~3.0.6"
   }
 }
