@@ -1,26 +1,28 @@
-var config = require('./config');
+var parseJSON = require('./lib/parseJSON');
 
 var zmq = require('zmq');
 var socket = zmq.socket('pull');
-var Promise = require('rsvp').Promise;
-socket.connect(config.port);
 
-var dropbox = require('jsbin-dropbox-sync');
+var tasks = {};
 
-function parse(string) {
-  return new Promise(function (resolve, reject) {
-    resolve(JSON.parse(string));
-  });
-}
+module.exports = {
+  
+  initialise: function (port) {
+    socket.connect(port);
+    socket.on('message', function (buffer) {
+      parseJSON(buffer.toString()).then(function (data) {
+        tasks[data.type](data);
+      }).catch(function () {
+        console.error('invalid message: ' + buffer.toString());
+      });
+    });
+  },
 
-socket.on('message', function (buffer) {
-  parse(buffer.toString()).then(function (data) {
-    if (data.type === 'dropbox') {
-      dropbox.process(data); // whatevs...
+  registerTask: function (name, fn) {
+    if (tasks[name] !== undefined) {
+      console.error('There is a task registered already with the name', name, '\n Overwriting the', name, 'task.');
     }
-  }).catch(function () {
-    console.error('invalid message: ' + buffer.toString());
-  });
-});
+    tasks[name] = fn;
+  }
 
-dropbox(socket, config);
+};
