@@ -1,6 +1,6 @@
 {
   "name": "jobsworth",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "zmq job handler",
   "main": "index.js",
   "scripts": {
