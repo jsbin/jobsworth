@@ -11,7 +11,9 @@ module.exports = {
     socket.connect(port);
     socket.on('message', function (buffer) {
       parseJSON(buffer.toString()).then(function (data) {
-        tasks[data.type](data);
+        if (tasks[data.type]) {
+          tasks[data.type](data);
+        }
       }).catch(function () {
         console.error('invalid message: ' + buffer.toString());
       });
