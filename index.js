@@ -1,6 +1,7 @@
+var util = require('util');
+var zmq = require('zmq');
 var parseJSON = require('./lib/parseJSON');
 
-var zmq = require('zmq');
 var socket = zmq.socket('pull');
 
 var tasks = {};
@@ -11,16 +12,21 @@ module.exports = {
     socket.connect(port);
     socket.on('message', function (buffer) {
       parseJSON(buffer.toString()).then(function (data) {
-        tasks[data.type](data);
+        if (tasks[data.type]) {
+          util.log(util.format('Jobsworth:: ' + data.type + ': ' + '%j', data));
+          tasks[data.type](data);
+        } else {
+          util.log('Jobsworth:: Unregistered Task: ' + data.task);
+        }
       }).catch(function () {
-        console.error('invalid message: ' + buffer.toString());
+        util.log('Jobsworth:: Invalid Message: ' + buffer.toString());
       });
     });
   },
 
   registerTask: function (name, fn) {
     if (tasks[name] !== undefined) {
-      console.error('There is a task registered already with the name', name, '\n Overwriting the', name, 'task.');
+      util.log('Jobsworth:: Already registered task: ' + name + ' - overwriting the ' + name + 'task');
     }
     tasks[name] = fn;
   }
