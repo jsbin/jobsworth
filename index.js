@@ -1,7 +1,7 @@
 var util = require('util');
+var zmq = require('zmq');
 var parseJSON = require('./lib/parseJSON');
 
-var zmq = require('zmq');
 var socket = zmq.socket('pull');
 
 var tasks = {};
